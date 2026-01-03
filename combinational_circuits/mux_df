@@ -1,0 +1,64 @@
+// 4x1 Multiplexer using Dataflow Modeling
+module mux_4x1_df (
+    input [3:0] in,      // 4 input lines
+    input [1:0] sel,     // 2-bit select line
+    output y             // Output
+);
+    
+    assign y = (sel == 2'b00) ? in[0] :
+               (sel == 2'b01) ? in[1] :
+               (sel == 2'b10) ? in[2] :
+               (sel == 2'b11) ? in[3] : 1'bx;
+    
+endmodule
+
+// Testbench for 4x1 Multiplexer
+module tb_mux_4x1_df;
+    
+    reg [3:0] in;
+    reg [1:0] sel;
+    wire y;
+    
+    // Instantiate the module
+    mux_4x1_df uut (
+        .in(in),
+        .sel(sel),
+        .y(y)
+    );
+    
+    initial begin
+        // Test all combinations
+        $display("4x1 MUX Dataflow Modeling - Test Results");
+        $display("=========================================");
+        $display("in[3:0] | sel[1:0] | Output");
+        $display("---------+----------+-------");
+        
+        // Test case 1: Select input 0
+        in = 4'b1010; sel = 2'b00;
+        #5 $display("%b | %b | %b", in, sel, y);
+        
+        // Test case 2: Select input 1
+        in = 4'b1010; sel = 2'b01;
+        #5 $display("%b | %b | %b", in, sel, y);
+        
+        // Test case 3: Select input 2
+        in = 4'b1010; sel = 2'b10;
+        #5 $display("%b | %b | %b", in, sel, y);
+        
+        // Test case 4: Select input 3
+        in = 4'b1010; sel = 2'b11;
+        #5 $display("%b | %b | %b", in, sel, y);
+        
+        // Test case 5: Different input pattern
+        in = 4'b0101; sel = 2'b00;
+        #5 $display("%b | %b | %b", in, sel, y);
+        
+        // Test case 6: Different input pattern
+        in = 4'b0101; sel = 2'b11;
+        #5 $display("%b | %b | %b", in, sel, y);
+        
+        $display("=========================================");
+        $finish;
+    end
+    
+endmodule
